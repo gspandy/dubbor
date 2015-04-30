@@ -1,0 +1,30 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.dboxes.dubbor</groupId>
+        <artifactId>dubbor-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>dubbor-appver</artifactId>
+    <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
+    <description>The appver module of dubbor project</description>
+    
+    <properties>
+        <skip_maven_deploy>true</skip_maven_deploy>
+    </properties>
+    
+    <modules>
+        <module>dubbor-appver-api</module>
+        <module>dubbor-appver-provider</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>dubbo-rpc-rest</artifactId>
+            <version>2.8.3</version>
+        </dependency>
+    </dependencies>
+</project>

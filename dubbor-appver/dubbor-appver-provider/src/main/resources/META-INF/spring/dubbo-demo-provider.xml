@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <dubbo:application name="demo-provider" owner="programmer" organization="dubbox"/>
+
+    <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
+
+    <dubbo:monitor protocol="registry"/>
+
+    <dubbo:protocol name="dubbo" serialization="kryo" optimizer="com.alibaba.dubbo.demo.SerializationOptimizerImpl"/>
+
+    <dubbo:protocol name="rest" port="8888" threads="500" contextpath="services" server="tomcat" accepts="500"
+                    extension="org.dboxes.dubbor.common.extension.TraceInterceptor,
+                    org.dboxes.dubbor.common.extension.TraceFilter,
+                    org.dboxes.dubbor.common.extension.ClientTraceFilter,
+                    org.dboxes.dubbor.common.extension.DynamicTraceBinding,
+                    org.dboxes.dubbor.common.extension.CustomExceptionMapper,
+                    com.alibaba.dubbo.rpc.protocol.rest.support.LoggingFilter"/>
+
+
+
+    <dubbo:reference id="demoService" interface="org.dboxes.dubbor.user.api.DemoService"/>
+
+    <dubbo:reference id="userService" interface="org.dboxes.dubbor.user.api.UserService"/>
+
+    <bean class="org.dboxes.dubbor.appver.user.DemoAction" init-method="start">
+        <property name="demoService" ref="demoService"/>
+        <property name="userService" ref="userService"/>
+    </bean>
+
+    <dubbo:service interface="org.dboxes.dubbor.appver.api.UserRestService" ref="userRestService"  protocol="rest" validation="true"/>
+
+    <bean id="userRestService" class="org.dboxes.dubbor.appver.user.service.UserRestServiceImpl">
+        <property name="userService" ref="userService"/>
+    </bean>
+</beans>
